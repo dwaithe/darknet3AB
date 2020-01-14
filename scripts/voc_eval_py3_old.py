@@ -101,15 +101,12 @@ def voc_eval(detpath,
     # read list of images
     with open(imagesetfile, 'r') as f:
         lines = f.readlines()
-    imagenames = [x.split("/")[-1].split('.jpg')[0] for x in lines]
-    imagepaths = [x.strip() for x in lines]
+    imagenames = [x.strip() for x in lines]
 
     # load annots
     recs = {}
-    for imagename, imagepath in zip(imagenames,imagepaths):
-        imagepath = imagepath.replace("JPEGImages", "Annotations")
-        imagepath = imagepath.replace(".jpg", ".xml")
-        recs[imagename] = parse_rec(imagepath)
+    for i, imagename in enumerate(imagenames):
+        recs[imagename] = parse_rec(annopath.format(imagename))
         #if i % 100 == 0:
             #print('Reading annotation for {:d}/{:d}').format(i + 1, len(imagenames))
     # save
@@ -139,12 +136,10 @@ def voc_eval(detpath,
     image_ids = [x[0] for x in splitlines]
     confidence = np.array([float(x[1]) for x in splitlines])
     BB = np.array([[float(z) for z in x[2:]] for x in splitlines])
-    print('detfile',detfile)
 
     # sort by confidence
     sorted_ind = np.argsort(-confidence)
     sorted_scores = np.sort(-confidence)
-    print('BB',BB,sorted_ind)
     BB = BB[sorted_ind, :]
     image_ids = [image_ids[x] for x in sorted_ind]
 
