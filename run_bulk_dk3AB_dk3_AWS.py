@@ -123,6 +123,6 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
-	print(args.exp,gpu)
+	print(args.exp,args.gpu)
 
 	run_experiment(args.exp,args.gpu)
