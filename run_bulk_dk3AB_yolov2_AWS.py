@@ -115,4 +115,14 @@ def run_experiment(exp_id):
 
 if __name__ == "__main__":
 
-	run_experiment('experiment_spec_01.txt')
+	parser = argparse.ArgumentParser()
+   
+	parser.add_argument('--exp', required=True)
+	parser.add_argument('--gpu', required=True)
+
+	args = parser.parse_args()
+
+	print(args.exp,args.gpu)
+
+	run_experiment(args.exp,args.gpu)
+
