@@ -121,7 +121,9 @@ if os.name == "nt":
             lib = CDLL(winGPUdll, RTLD_GLOBAL)
             print("Environment variables indicated a CPU run, but we didn't find `"+winNoGPUdll+"`. Trying a GPU run anyway.")
 else:
-    lib = CDLL("./libdarknet.so", RTLD_GLOBAL)
+
+	pathdir = str( os.path.dirname(os.path.realpath(__file__)))
+	lib = CDLL(pathdir+"/libdarknet.so", RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
 lib.network_height.argtypes = [c_void_p]
@@ -248,11 +250,12 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45, debug= False):
 
 def detect_image(net, meta, im, thresh=.5, hier_thresh=.5, nms=.45, debug= False):
     #import cv2
-    #custom_image_bgr = cv2.imread(image) # use: detect(,,imagePath,)
+    #custom_image_bgr = cv2.imread(im) # use: detect(,,imagePath,)
     #custom_image = cv2.cvtColor(custom_image_bgr, cv2.COLOR_BGR2RGB)
     #custom_image = cv2.resize(custom_image,(lib.network_width(net), lib.network_height(net)), interpolation = cv2.INTER_LINEAR)
-    #import scipy.misc
-    #custom_image = scipy.misc.imread(image)
+    #import imageio
+    #custom_image = imageio.imread(im)
+    #print('custom_image',custom_image.shape)
     #im, arr = array_to_image(custom_image)		# you should comment line below: free_image(im)
     num = c_int(0)
     if debug: print("Assigned num")
@@ -313,7 +316,7 @@ def performDetect(imagePath="data/dog.jpg", thresh= 0.25, configPath = "./cfg/yo
     imagePath: str
         Path to the image to evaluate. Raises ValueError if not found
 
-    thresh: float (default= 0.25)
+    thresh: float (default= 0.25)w
         The detection threshold
 
     configPath: str
@@ -446,4 +449,9 @@ def performDetect(imagePath="data/dog.jpg", thresh= 0.25, configPath = "./cfg/yo
     return detections
 
 if __name__ == "__main__":
-    print(performDetect())
+    #print(performDetect()) 
+	out =performDetect("../../cell_datasets/c127_dapi_class/2018/JPEGImages/108632.jpg", configPath="./cfg/yolov2_dk3AB-classes-1-flip.cfg", metaPath= "../../cell_datasets/c127_dapi_class/2018/obj_c127_dapi_class30.data", weightPath="../../models/darknet/c127_dapi_class30/yolov2_dk3AB-classes-1-no-flip_final.weights",showImage=False,makeImageOnly = True);
+	print(out)
+	out =performDetect("../../cell_datasets/c127_dapi_class/2018/JPEGImages/108633.jpg", configPath="./cfg/yolov2_dk3AB-classes-1-flip.cfg", metaPath= "../../cell_datasets/c127_dapi_class/2018/obj_c127_dapi_class30.data", weightPath="../../models/darknet/c127_dapi_class30/yolov2_dk3AB-classes-1-no-flip_final.weights",showImage=False,makeImageOnly = True);
+	print(out)
+    
