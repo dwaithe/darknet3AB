@@ -122,6 +122,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
     args.m = plist->size;
     args.classes = classes;
     args.flip = net.flip;
+    args.flip_vertical = net.flip_vertical;
     args.jitter = jitter;
     args.num_boxes = l.max_boxes;
     net.num_boxes = args.num_boxes;
