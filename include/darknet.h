@@ -596,7 +596,7 @@ typedef struct network {
     layer *layers;
     float *output;
     learning_rate_policy policy;
-
+    int flip_vertical;
     float learning_rate;
     float learning_rate_min;
     float learning_rate_max;
@@ -796,6 +796,7 @@ typedef struct load_args {
     int out_h;
     int nh;
     int nw;
+    int flip_vertical;
     int num_boxes;
     int min, max, size;
     int classes;

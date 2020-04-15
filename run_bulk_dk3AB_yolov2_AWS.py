@@ -1,4 +1,5 @@
 import subprocess
+import argparse
 import shutil
 import sys
 import _pickle as pickle
@@ -12,18 +13,17 @@ import os
 from exp_proc import get_class_names, get_experiment_parameters,load_dataset
 
 #Global variables
-path_to_amca_config = "/home/molimm2/dwaithe/object_detection/amca/config/"
-path_to_darknet = "/home/molimm2/dwaithe/object_detection/darknet3AB/darknet/"
-path_to_data = "/home/molimm2/dwaithe/object_detection/cell_datasets/"
-models_path_on_server = "/scratch/dwaithe/models/darknet/"
+path_to_amca_config = "../../amca/config/"
+path_to_darknet = "../../darknet3AB/darknet/"
+path_to_data = "../../cell_datasets/"
+models_path_on_server = "../../models/darknet/"
 
-GPU_to_use = 1
 models_itr_to_test =[ 1000, 2000, 3000, 4000, 5000,6000,7000,8000,9000,10000];
 #models_itr_to_test = [5000]
 
 
 #local variables
-def run_experiment(exp_id):
+def run_experiment(exp_id,GPU_to_use):
 
 
 	dmia, traina, testa, rep_a, flip_a, classes, foutfile = get_experiment_parameters(path_to_amca_config,exp_id)
@@ -115,4 +115,14 @@ def run_experiment(exp_id):
 
 if __name__ == "__main__":
 
-	run_experiment('experiment_spec_01.txt')
+	parser = argparse.ArgumentParser()
+   
+	parser.add_argument('--exp', required=True)
+	parser.add_argument('--gpu', required=True)
+
+	args = parser.parse_args()
+
+	print(args.exp,args.gpu)
+
+	run_experiment(args.exp,args.gpu)
+
